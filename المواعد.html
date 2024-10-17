@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>المواعد التي تم الغائها</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
+  <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <div class="navigation">
+    <ul>
+      <li>اهلا د.الاسم</li>
+      <li><a href="./اوامر.html">اوامر</a></li>
+      <li><a href="./بيانات.html">بيانات</a></li>
+      <li class="active">المواعد التي تم الغائها</li>
+    </ul>
+  </div>
+  <table id="cancelledAppointments">
+    <thead>
+      <tr>
+        <th scope="col">Patient Name</th>
+        <th scope="col">Age</th>
+        <th scope="col">Patient Problem</th>
+        <th scope="col">Medicine</th>
+        <th scope="col">Date</th>
+        <th scope="col">Next Date</th>
+        <th scope="col">Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cancelledAppointments = JSON.parse(localStorage.getItem('cancelledAppointments')) || [];
+
+      cancelledAppointments.forEach(appointment => {
+        appendCancelledAppointment(appointment);
+      });
+    });
+  
+    function appendCancelledAppointment(data) {
+      const cancelledRow = document.createElement('tr');
+      cancelledRow.innerHTML = `
+        <td>${data.patientName}</td>
+        <td>${data.age}</td>
+        <td>${data.patientProblem}</td>
+        <td>${data.medicine}</td>
+        <td>${data.date}</td>
+        <td>${data.nextDate}</td>
+        <td>${data.notes}</td>
+      `;
+      document.querySelector('#cancelledAppointments tbody').appendChild(cancelledRow);
+    }
+  </script>
+</body>
+</html>

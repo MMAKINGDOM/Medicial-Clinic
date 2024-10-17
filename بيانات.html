@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=Lato: 100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
+  <link href="style.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <ul class="navigation">
+    <li>اهلا د.الاسم</li>
+    <li><a href="./اوامر.html">اوامر</a></li>
+    <li class="active">بيانات</li>
+    <li><a href="./المواعد.html">المواعد التي تم الغائها</a></li>
+  </ul>
+<div class="search">
+  <label for="search">الاسم</label>
+  <input type="text" />
+  <button type="submit">بحث</button>
+
+</div>
+  <table id="dataTable">
+    <thead>
+        <tr>
+          <th scope="col">Patient Name</th>
+          <th scope="col">Age</th>
+          <th scope="col">Patient Problem</th>
+          <th scope="col">Medicine</th>
+          <th scope="col">Date</th>
+          <th scope="col">Next Date</th>
+          <th scope="col">Notes</th>
+          <th scope="col">اوامر</th>
+        </tr>
+    </thead>
+  </table>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const storedData = JSON.parse(localStorage.getItem('allFormData'));
+      if (storedData) {
+        storedData.forEach((data, index) => {
+          appendRow(data, index); // Pass index to appendRow function
+        });
+      }
+    });
+  
+    function appendRow(data, index) {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td>${data.patientName}</td>
+        <td>${data.age}</td>
+        <td>${data.patientProblem}</td>
+        <td>${data.medicine}</td>
+        <td>${data.date}</td>
+        <td>${data.nextDate}</td>
+        <td>${data.notes}</td>
+        <td><button onclick="deleteRow(${index})">الغاء الموعد</button></td>
+      `;
+      document.getElementById('dataTable').appendChild(newRow);
+    }
+  
+    function deleteRow(index) {
+    let allFormData = JSON.parse(localStorage.getItem('allFormData')) || [];
+    let cancelledData = allFormData.splice(index, 1)[0]; // Remove the item at the specified index
+
+    // Store the updated array in localStorage
+    localStorage.setItem('allFormData', JSON.stringify(allFormData));
+
+    // Retrieve or initialize the cancelled appointments array in localStorage
+    let cancelledAppointments = JSON.parse(localStorage.getItem('cancelledAppointments')) || [];
+
+    // Add the cancelled appointment to the cancelledAppointments array
+    cancelledAppointments.push(cancelledData);
+
+    // Store the updated array in localStorage
+    localStorage.setItem('cancelledAppointments', JSON.stringify(cancelledAppointments));
+
+    // Redirect to html2.html
+    window.location.href = './المواعد.html';
+  }
+  </script>
+  
+  <!-- Include this hidden table in html2.html -->
+  <table id="cancelledAppointments" style="display: none;"></table>
+
+</body>
+</html>

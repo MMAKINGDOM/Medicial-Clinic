@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>اوامر بيانات العيادة</title>
+  <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700|Luckiest+Guy|Oxygen:300,400" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Oxygen', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #004d53;
+    }
+    .navigation {
+      box-sizing: border-box;
+      background-color: #3587A4;
+      overflow: auto;
+      padding: 18px 50px;
+      position: relative;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+    }
+    .navigation li {
+      color: #FFF;
+      display: inline-block;
+      font-family: 'Oxygen', sans-serif;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin: 0;
+      padding: 20px 18px 10px 18px;
+      text-transform: uppercase;
+    }
+    .form-container {
+      max-width: 400px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #3587A4;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgb(17, 0, 255);
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      box-sizing: border-box;
+    }
+    .form-group input[type="date"] {
+      height: 38px; /* Adjust height for consistency */
+    }
+    .gumball {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background-color: #f39c12;
+    }
+    .active {
+      color: #ffffffd7
+    }
+    button[type="submit"] {
+      background-color: #000000e5;
+      color: #ffffff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #555555;
+    }
+    
+  </style>
+</head>
+<body>
+<ul class="navigation">
+    <!-- Navigation items -->
+    <li>اهلا د.الاسم</li>
+    <li class="active">اوامر</li>
+    <li><a href="./بيانات.html">بيانات</a></li>
+    <li><a href="./المواعد.html">المواعد التي تم الغائها</a></li>
+</ul>
+
+
+<div class="form-container">
+  <form id="dataForm" action="#">
+    <div class="form-group">
+      <label for="patientName">اسم المريض:</label>
+      <input type="text" id="patientName" name="patientName" required>
+    </div>
+    <div class="form-group">
+      <label for="age">العمر:</label>
+      <input type="number" id="age" name="age" required>
+    </div>
+    <div class="form-group">
+      <label for="patientProblem">مشكلة المريض:</label>
+      <input type="text" id="patientProblem" name="patientProblem" required>
+    </div>
+    <div class="form-group">
+      <label for="medicine">الدواء:</label>
+      <input type="text" id="medicine" name="medicine" required>
+    </div>
+    <div class="form-group">
+      <label for="date">التاريخ:</label>
+      <input type="date" id="date" name="date" required>
+    </div>
+    <div class="form-group">
+      <label for="nextDate">التاريخ التالي:</label>
+      <input type="date" id="nextDate" name="nextDate" >
+    </div>
+    <div class="form-group">
+      <label for="notes">اي ملاحظات (اختياري)</label>
+      <input type="text" id="notes" name="notes" >
+    </div>
+    <button type="submit"> ارسال الى القاعدة</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('dataForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent default form submission
+
+    // Retrieve form values
+    const patientName = document.getElementById('patientName').value;
+    const age = document.getElementById('age').value;
+    const patientProblem = document.getElementById('patientProblem').value;
+    const medicine = document.getElementById('medicine').value;
+    const date = document.getElementById('date').value;
+    const nextDate = document.getElementById('nextDate').value;
+    const notes = document.getElementById('notes').value;
+
+    // Prepare data object
+    const data = {
+      patientName: patientName,
+      age: age,
+      patientProblem: patientProblem,
+      medicine: medicine,
+      date: date,
+      nextDate: nextDate,
+      notes: notes
+    };
+
+    // Retrieve existing data or initialize as an empty array
+    let allFormData = JSON.parse(localStorage.getItem('allFormData')) || [];
+
+    // Append new data to the array
+    allFormData.push(data);
+
+    // Store updated array in localStorage
+    localStorage.setItem('allFormData', JSON.stringify(allFormData));
+
+    // Redirect to html1.html
+    window.location.href = './بيانات.html';
+  });
+    function deleteRow(index) {
+      let allFormData = JSON.parse(localStorage.getItem('allFormData')) || [];
+    
+    // Remove the item at the specified index
+      allFormData.splice(index, 1);
+    
+    // Store the updated array in localStorage
+      localStorage.setItem('allFormData', JSON.stringify(allFormData));
+    
+    // Reload the page to reflect changes
+      location.reload();
+  }
+</script>
+
+</body>
+</html>
